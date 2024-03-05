@@ -27,9 +27,13 @@ btrfs subvolume create /mnt/@nix
 umount /mnt
 
 ## MOUNT
-mount -t btrfs -o noatime,compress=zstd:3,subvol=@root /dev/sda3 /mnt
+mount -t btrfs -o noatime,ssd,compress=zstd:3,subvol=@root /dev/sda3 /mnt
 mkdir -p /mnt/{boot,nix,home}
-mount -t btrfs -o noatime,compress=zstd:3,subvol=@home /dev/sda3 /mnt/home
-mount -t btrfs -o noatime,compress=zstd:3,subvol=@nix /dev/sda3 /mnt/nix
+mount -t btrfs -o noatime,ssd,compress=zstd:3,subvol=@home /dev/sda3 /mnt/home
+mount -t btrfs -o noatime,ssd,compress=zstd:3,subvol=@nix /dev/sda3 /mnt/nix
 mount -t vfat /dev/sda1 /mnt/boot
 swapon /dev/sda2
+
+nixos-generate-config --root /mnt
+
+nixos-install
