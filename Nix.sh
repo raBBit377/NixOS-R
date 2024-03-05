@@ -1,22 +1,22 @@
 sudo su
 nix-shell -p btrfs-progs
 
-parted -s /dev/sda -- mklabel gpt
+parted /dev/sda -- mklabel gpt
 
 ## MARKING
 
 # BOOT
-parted -s /dev/sda mkpart esp fat32 0% 5.4gb
-parted -s /dev/sda set 1 esp on
-parted -s /dev/sda set 1 boot on
+parted /dev/sda mkpart esp fat32 0% 5.4gb
+parted /dev/sda set 1 esp on
+parted /dev/sda set 1 boot on
 mkfs.fat -F 32 -n UEFI /dev/sda1
 
 # SWAP
-parted -s /dev/sda mkpart swap linux-swap 512mb 44.5gb
+parted /dev/sda mkpart swap linux-swap 512mb 44.5gb
 mkswap -L SWAP /dev/sda2
 
 # BTRFS
-parted -s /dev/sda mkpart nixos btrfs 4.5GiB 100%
+parted /dev/sda mkpart nixos btrfs 4.5GiB 100%
 mkfs.btrfs -f -L NIXOS /dev/sda3
 
 ## BTRFS subvolumes
